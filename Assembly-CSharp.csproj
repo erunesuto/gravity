@@ -62,12 +62,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\ChangeGravity.cs" />
-    <Compile Include="Assets\Scripts\FPSController.cs" />
-    <Compile Include="Assets\Scripts\FPSController2.cs" />
-    <Compile Include="Assets\Scripts\MouseLook.cs" />
-    <Compile Include="Assets\Scripts\PlayerMovement.cs" />
-    <None Include="Assets\Scripts\prueba.txt" />
+    <Compile Include="Assets\Scripts\CharacterController\MouseLook.cs" />
+    <Compile Include="Assets\Scripts\CharacterController\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\CharacterController\PlayerMovementTest.cs" />
+    <Compile Include="Assets\Scripts\Rigibody\FPSController.cs" />
+    <Compile Include="Assets\Scripts\Rigibody\FPSController2.cs" />
+    <Compile Include="Assets\Scripts\Rigibody\MouseLookRB.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/unity/2019.4.3f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

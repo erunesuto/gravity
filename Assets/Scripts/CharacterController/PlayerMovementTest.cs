@@ -6,7 +6,7 @@ using UnityEngine;
 
 
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementTest : MonoBehaviour
 {
 
     public CharacterController controller;
@@ -26,24 +26,38 @@ public class PlayerMovement : MonoBehaviour
 
     bool gravityInverse = false;
 
+
     void Update()
     {
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-
-        /*if (isGrounded && velocity.y < 0)
+        /*if (isGrounded && velocity.y < 0)//Dont know why, Brackeys recomendation
         {
             velocity.y = -2f;
+
+        }else if (isGrounded && velocity.y > 0)
+        {
+            velocity.y = 2f;
         }*/
 
+        movement();
 
+        changeGravity();
+
+        Debug.Log(velocity.y);
+
+    }
+
+    void movement()
+    {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;
 
         controller.Move(move * speed * Time.deltaTime);
+
 
         if (Input.GetButton("Jump") && isGrounded)
         {
@@ -55,23 +69,25 @@ public class PlayerMovement : MonoBehaviour
             {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
-            
-       
         }
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
 
-        //gravity
-        if (Input.GetKeyDown(KeyCode.G))//cambiar el key por button
+
+    void changeGravity()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && Time.timeScale == 1)//cambiar el key por button
         {
             Invoke("restartGravity", 0.1f);
             if (gravityInverse == true)
             {
                 velocity.y = -(Mathf.Sqrt(jumpHeight * -2f * gravity * -1));//Player jumps
                 gravity = -gravity;
-                Time.timeScale = 0.5f;
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
+                Time.timeScale = 0.4f;
+                //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
+                StartCoroutine(RotateMe(Vector3.back * 180, 0.5f));
                 gravityInverse = false;
 
             }
@@ -80,25 +96,16 @@ public class PlayerMovement : MonoBehaviour
 
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);//Player jumps
                 gravity = -gravity;
-                Time.timeScale = 0.5f;
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 180);
-
+                Time.timeScale = 0.4f;
+                //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 180);
+                StartCoroutine(RotateMe(Vector3.back * 180, 0.5f));
                 gravityInverse = true;
 
             }
-            
-        }
-        aki
-            //pulir la corutina y ponerla en la g
-        //rotar el personaje y despues vamo viendo. Hacerlo con un corrutina
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            StartCoroutine(RotateMe(Vector3.back * 180, 1));
-        }
 
-            Debug.Log(gravity +" "+ Time.timeScale);
-        
+        }
     }
+
     void restartGravity()
     {
         if (isGrounded)
@@ -113,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //coroutines
-    IEnumerator RotateMe(Vector3 byAngles, float inTime)
+    IEnumerator RotateMe(Vector3 byAngles, float inTime)//rotate X degrees in X seconds
     {
         var fromAngle = transform.rotation;
         var toAngle = Quaternion.Euler(transform.eulerAngles + byAngles);
