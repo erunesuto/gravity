@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\CharacterController\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\CharacterController\PlayerMovementTest.cs" />
     <Compile Include="Assets\Scripts\Rigibody\FPSController.cs" />
+    <Compile Include="Assets\Scripts\Rigibody\ItemGravity.cs" />
     <Compile Include="Assets\Scripts\Rigibody\MouseLookRB.cs" />
     <Compile Include="Assets\Scripts\Rigibody\PickObject.cs" />
     <Reference Include="UnityEngine">

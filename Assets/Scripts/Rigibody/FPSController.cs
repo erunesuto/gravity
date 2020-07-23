@@ -8,7 +8,7 @@ public class FPSController : MonoBehaviour
 
     [Header("Movement")]
     public float speed = 5;
-    public float jumpForce = 15;
+    public float jumpForce = 5;
     private float xAxis, zAxis;
 
     [Header("Ground things")]
@@ -22,7 +22,7 @@ public class FPSController : MonoBehaviour
     [Tooltip("Time the player is rotating")]
     public float rotationTime = 1f;
     private int gravityID = 2; //controles what "gravity position" player is(1-up, 2d-own, 3-left o 4-right) Used to avoid change to the smae gravity twice
-    private bool changeGravityButtonDown = false;
+    private bool changeGravityButtonDown = false;//flag. Controlls if any change gravity button is pushed
 
     // Start is called before the first frame update
     void Start()
@@ -33,17 +33,18 @@ public class FPSController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        canChangeGravity();
+        //canChangeGravity();
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, scenarioMask);
-
-        movement();
-
         jump();
 
         //changeGravity();
         changeGravityV2();
+    }
+
+    private void FixedUpdate()
+    {
+        movement();
     }
 
     void movement()
@@ -52,6 +53,8 @@ public class FPSController : MonoBehaviour
         zAxis = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(xAxis, 0, zAxis);
         transform.Translate(movement * speed * Time.deltaTime);
+        //rigidbody.AddRelativeForce(movement * speed * Time.deltaTime);
+        
     }
 
     void jump()
