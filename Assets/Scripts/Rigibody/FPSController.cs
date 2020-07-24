@@ -106,18 +106,19 @@ public class FPSController : MonoBehaviour
         if (canChangeGravity())
         {
             /////
-            if (Input.GetKeyDown(KeyCode.Q))
+            //if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetButtonDown("GravityLeft"))
             {
                 gravityID--;
                 changeGravityButtonDown = true;
               
-            }else if(Input.GetKeyDown(KeyCode.Alpha2))
-                {
+            }else if (Input.GetButtonDown("GravityUp"))
+            {
                 gravityID += 2;
                 changeGravityButtonDown = true;
             }
-            else if (Input.GetKeyDown(KeyCode.E))
-                {
+            else if (Input.GetButtonDown("GravityRight"))
+            {
                 gravityID++;
                 changeGravityButtonDown = true;
             }

@@ -20,11 +20,14 @@ public class ItemGravity : MonoBehaviour
     private void Update()
     {
         //transform.localEulerAngles = new Vector3(0, 0, 0);
-        if (Input.GetKey(KeyCode.Mouse0) && Vector3.Distance(transform.position, pickObjectDestination.transform.position) < PickObject.pickDistance/*transform.position == pickObjectDestination.transform.position*/ )
+        if (Input.GetButton("PickUp") && pickObjectDestination.transform.childCount <= 1 &&
+            transform.parent == pickObjectDestination.transform &&
+            Vector3.Distance(transform.position, pickObjectDestination.transform.position) < PickObject.pickDistance/*transform.position == pickObjectDestination.transform.position*/ )
         {
             
             rigidbody.AddForce(0, 0, 0);
-            transform.position = pickObjectDestination.transform.position;
+            transform.position = pickObjectDestination.transform.position;  
+            
         }
         else
         {
@@ -34,11 +37,11 @@ public class ItemGravity : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    /*void FixedUpdate()
     {
         
 
-        /*if (transform.position == pickObjectDestination.transform.position)
+        if (transform.position == pickObjectDestination.transform.position)
         {
             Debug.Log("misma posicion");
             velocity = new Vector3(1, 1, 1);
@@ -53,8 +56,8 @@ public class ItemGravity : MonoBehaviour
         }
         //transform.position += velocity * Time.deltaTime;
         Debug.Log(transform.position +" " + velocity);
-        */
-    }
+        
+    }*/
 
 
 }
