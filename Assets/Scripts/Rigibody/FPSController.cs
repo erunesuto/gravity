@@ -28,23 +28,31 @@ public class FPSController : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        Invoke("resetPlayerScale", 5);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //canChangeGravity();
 
+    
+        Debug.Log(canChangeGravity());
+
+       
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, scenarioMask);
         jump();
 
-        //changeGravity();
         changeGravityV2();
+
+        repositionZAngles();
+
+        //lockCamera();
     }
 
     private void FixedUpdate()
     {
         movement();
+
     }
 
     void movement()
@@ -177,7 +185,7 @@ public class FPSController : MonoBehaviour
     bool canChangeGravity()
     {
         //if (isGrounded && (transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == -90 || transform.localEulerAngles.z == 180 || transform.localEulerAngles.z == 0))
-        if (isGrounded && (transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == 270 || transform.localEulerAngles.z == 180 || transform.localEulerAngles.z == 0))
+        if (isGrounded && (transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == 270 || transform.localEulerAngles.z == 180  || transform.localEulerAngles.z == 0 || transform.localEulerAngles.z == 360))
         {
             return true;
         }
@@ -187,9 +195,54 @@ public class FPSController : MonoBehaviour
         }
     }
 
-    void repositionZAngle()
+    void resetPlayerScale()
     {
-        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 90);
+        transform.localScale = new Vector3(1, 1, 1);
+        Invoke("resetPlayerScale", 5);
+    }
+    void repositionZAngles()
+    {
+        if(gravityID == 1)
+        {
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, -90);
+        }
+        else if (gravityID == 2)
+        {
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
+        }
+        else if (gravityID == 3)
+        {
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 90);
+        }
+        else if (gravityID == 4)
+        {
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 180);
+        }
+    }
+
+    void lockCamera()
+    {
+        var isLock = false;
+
+        if (Input.GetButtonDown("GravityLeft") || Input.GetButtonDown("GravityRight") || Input.GetButtonDown("GravityUp"))
+        {
+            isLock = true;
+        }
+
+        if (canChangeGravity())
+        {
+            isLock = false;
+        }
+
+        if(!isLock)
+        //if ((transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == 270 || transform.localEulerAngles.z == 180 || transform.localEulerAngles.z == 0 || transform.localEulerAngles.z == 360))
+        {
+            GetComponentInChildren<MouseLookRB>().enabled = true;
+        }
+        else
+        {
+            GetComponentInChildren<MouseLookRB>().enabled = false;
+        }
     }
 
     #region COROUTINES
