@@ -28,7 +28,7 @@ public class FPSController : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        Invoke("resetPlayerScale", 5);
+        //Invoke("resetPlayerScale", 5);
     }
 
     // Update is called once per frame
@@ -44,14 +44,14 @@ public class FPSController : MonoBehaviour
 
         changeGravityV2();
 
-        repositionZAngles();
-
+        //epositionZAngles();
         //lockCamera();
     }
 
     private void FixedUpdate()
     {
         movement();
+        //repositionZAngles();
 
     }
 
@@ -185,7 +185,11 @@ public class FPSController : MonoBehaviour
     bool canChangeGravity()
     {
         //if (isGrounded && (transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == -90 || transform.localEulerAngles.z == 180 || transform.localEulerAngles.z == 0))
-        if (isGrounded && (transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == 270 || transform.localEulerAngles.z == 180  || transform.localEulerAngles.z == 0 || transform.localEulerAngles.z == 360))
+        // "elbueno" if (isGrounded && (transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == 270 || transform.localEulerAngles.z == 180  || transform.localEulerAngles.z == 0 || transform.localEulerAngles.z == 360))
+        if (isGrounded && (Mathf.Round( transform.localEulerAngles.z) == 90f ||
+            Mathf.Round(transform.localEulerAngles.z) == 270 || Mathf.Round(transform.localEulerAngles.z) == 180 ||
+            Mathf.Round(transform.localEulerAngles.z) ==  0 || Mathf.Round(transform.localEulerAngles.z)== 360))
+
         {
             return true;
         }
