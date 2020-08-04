@@ -13,7 +13,7 @@ public class ItemGravity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pickObjectDestination = GameObject.Find("/PlayerRB/PickObject");
+        pickObjectDestination = GameObject.Find("/PlayerRB/Main Camera/PickObject");
         rigidbody = GetComponent<Rigidbody>();
     }
 

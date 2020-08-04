@@ -10,19 +10,28 @@ public class MovingPlatformV2 : MonoBehaviour
     int actualTarget = 0;
     //[Range(2, 5)]
     public Transform[] targetsArray = new Transform[2];
-    
+
+    public LayerMask playerMask;
+    [Tooltip("The size of the Phisic.Check to detect collision with the player. The size have to be a bit bigger than the scale of the platform")]
+    private Vector3 sizeCollider;
+    [Tooltip("The size the collider is bigger than the platform")]
+    public float sizeColliderIncrement = 0.2f;
+    [Tooltip("The sizeCollierIncrement have to be smaller than the isTrigger box collider scale.")]
+    public bool explanation;
 
     // Use this for initialization
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player"); //find the player
         target = targetsArray[0];
+
+        sizeCollider = new Vector3(transform.localScale.x + sizeColliderIncrement, transform.localScale.y + sizeColliderIncrement, transform.localScale.z + sizeColliderIncrement);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     void FixedUpdate()
@@ -54,18 +63,34 @@ public class MovingPlatformV2 : MonoBehaviour
             actualTarget++;  
         }
 
+
+        //mejora del ontriger enter
+        //isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, scenarioMask);
+        
+        if(Physics.CheckBox(transform.position, sizeCollider / 2, new Quaternion(0,0,0,0), playerMask))
+        {
+            player.transform.parent = transform;
+            Debug.Log("contacto");
+        }
+        /*else
+        {
+            player.transform.parent = null;
+        }*/
+
     }
 
     //Controla que el personaje se mueva con la plataforma al entrar en contacto con la misma
     //Hace al jugador hijo de la plataforma para conseguir que se muevan juntos
-   
-        private void OnTriggerEnter(Collider other)
+
+    
+
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == player)
         {
             player.transform.parent = transform;
         }
-    }
+    }*/
 
 
     //Hace que el jugador no sea hijo de la plataforma

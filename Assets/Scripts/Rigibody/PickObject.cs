@@ -8,11 +8,13 @@ public class PickObject : MonoBehaviour
     
     private GameObject pickObjectDestination;
     public static float pickDistance = 3f;
+    [Tooltip("True if use the general gravity. False if use its own gravity.")]
     public bool thisItemUseGravity = true;
 
     private void Start()
     {
-        pickObjectDestination = GameObject.Find("/PlayerRB/PickObject");
+        //pickObjectDestination = GameObject.Find("/PlayerRB/PickObject");
+        pickObjectDestination = GameObject.Find("/PlayerRB/Main Camera/PickObject");
     }
 
    /* private void Update()
@@ -53,8 +55,15 @@ public class PickObject : MonoBehaviour
     {
         if(Vector3.Distance(transform.position, pickObjectDestination.transform.position) < pickDistance)//YOu cannot pick up the object if you are too far away
         {
+            if (GetComponent<BoxCollider>())
+            {
+                GetComponent<BoxCollider>().enabled = false;
+            }else if (GetComponent<SphereCollider>())
+            {
+                GetComponent<SphereCollider>().enabled = false;
+            }
 
-            GetComponent<BoxCollider>().enabled = false;
+            //GetComponent<BoxCollider>().enabled = false;
             GetComponent<Rigidbody>().useGravity = false;
             //this.transform.position = pickObjectDestination.position;
             this.transform.position = pickObjectDestination.transform.position;
@@ -71,7 +80,13 @@ public class PickObject : MonoBehaviour
             GetComponent<Rigidbody>().useGravity = true;
         }
         //GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<BoxCollider>().enabled = true;
+        if (GetComponent<BoxCollider>())
+        {
+            GetComponent<BoxCollider>().enabled = true;
+        }else if (GetComponent<SphereCollider>())
+        {
+            GetComponent<SphereCollider>().enabled = true;
+        }
     }
 }
 

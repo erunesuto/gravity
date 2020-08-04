@@ -28,17 +28,14 @@ public class FPSController : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        //Invoke("resetPlayerScale", 5);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-    
-        Debug.Log(canChangeGravity());
+        //Debug.Log(canChangeGravity());
 
-       
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, scenarioMask);
         jump();
 
@@ -251,7 +248,7 @@ public class FPSController : MonoBehaviour
 
     #region COROUTINES
     //COROUTINES
-    IEnumerator RotateMe(Vector3 byAngles, float inTime)//rotate X degrees in X seconds. Does not used
+    IEnumerator RotateMe(Vector3 byAngles, float inTime)//rotate X degrees in X seconds. NOT USED
     {
         var fromAngle = transform.rotation;
         var toAngle = Quaternion.Euler(transform.eulerAngles + byAngles);
