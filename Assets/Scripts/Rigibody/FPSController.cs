@@ -41,14 +41,11 @@ public class FPSController : MonoBehaviour
 
         changeGravityV2();
 
-        //epositionZAngles();
-        //lockCamera();
     }
 
     private void FixedUpdate()
     {
         movement();
-        //repositionZAngles();
 
     }
 

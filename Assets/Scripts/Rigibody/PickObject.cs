@@ -5,15 +5,19 @@ using UnityEngine;
 public class PickObject : MonoBehaviour
 {
 
-    
+    private Rigidbody rigidbody;
     private GameObject pickObjectDestination;
     public static float pickDistance = 3f;
     [Tooltip("True if use the general gravity. False if use its own gravity.")]
     public bool thisItemUseGravity = true;
+    private float itemOwnGravityX;//save the value of the gravity for ownGravity items
+    private float itemOwnGravityY;
+    public bool itemFreezeRotation = false;
 
     private void Start()
     {
-        //pickObjectDestination = GameObject.Find("/PlayerRB/PickObject");
+        rigidbody = GetComponent<Rigidbody>();
+        //pickObjectDestination = GameObject.Find("/PlayerRB/PickObject2");
         pickObjectDestination = GameObject.Find("/PlayerRB/Main Camera/PickObject");
     }
 
@@ -63,11 +67,14 @@ public class PickObject : MonoBehaviour
                 GetComponent<SphereCollider>().enabled = false;
             }
 
-            //GetComponent<BoxCollider>().enabled = false;
-            GetComponent<Rigidbody>().useGravity = false;
-            //this.transform.position = pickObjectDestination.position;
+            rigidbody.freezeRotation = true;
+            rigidbody.constraints = RigidbodyConstraints.FreezePosition;
+            rigidbody.useGravity = false;
+            
+            manageOwnGravityOnPickUp();
+            
             this.transform.position = pickObjectDestination.transform.position;
-            this.transform.parent = GameObject.Find("PickObject").transform;      
+            this.transform.parent = GameObject.Find("PickObject").transform;
 
         }     
     }
@@ -75,17 +82,47 @@ public class PickObject : MonoBehaviour
     private void OnMouseUp()
     {
         this.transform.parent = null;
+        rigidbody.constraints = RigidbodyConstraints.None;
+
+        if (itemFreezeRotation == true)
+        {
+            rigidbody.freezeRotation = true;
+        }
+        else
+        {
+            rigidbody.freezeRotation = false;
+        }
+
         if (thisItemUseGravity)
         {
-            GetComponent<Rigidbody>().useGravity = true;
+            rigidbody.useGravity = true;
         }
-        //GetComponent<Rigidbody>().useGravity = true;
+        
+        if (thisItemUseGravity == false)
+        {
+            this.GetComponent<ItemGravity>().gravityX = itemOwnGravityX;
+            this.GetComponent<ItemGravity>().gravityY = itemOwnGravityY;
+        }
+        
         if (GetComponent<BoxCollider>())
         {
             GetComponent<BoxCollider>().enabled = true;
+
         }else if (GetComponent<SphereCollider>())
         {
             GetComponent<SphereCollider>().enabled = true;
+        }
+    }
+
+    void manageOwnGravityOnPickUp()
+    {
+        if(thisItemUseGravity == false)
+        {
+            itemOwnGravityX = this.GetComponent<ItemGravity>().gravityX;
+            itemOwnGravityY = this.GetComponent<ItemGravity>().gravityY;
+
+            this.GetComponent<ItemGravity>().gravityX = 0;
+            this.GetComponent<ItemGravity>().gravityY = 0;
         }
     }
 }

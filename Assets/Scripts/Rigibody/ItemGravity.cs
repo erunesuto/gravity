@@ -17,12 +17,16 @@ public class ItemGravity : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
+    /*private void Update()
+    {
+        rigidbody.AddForce(gravityX, gravityY, 0);
+    }*/
     private void Update()
     {
         //transform.localEulerAngles = new Vector3(0, 0, 0);
         if (Input.GetButton("PickUp") && pickObjectDestination.transform.childCount <= 1 &&
             transform.parent == pickObjectDestination.transform &&
-            Vector3.Distance(transform.position, pickObjectDestination.transform.position) < PickObject.pickDistance/*transform.position == pickObjectDestination.transform.position*/ )
+            Vector3.Distance(transform.position, pickObjectDestination.transform.position) < PickObject.pickDistance )
         {
             
             rigidbody.AddForce(0, 0, 0);
