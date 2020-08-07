@@ -17,11 +17,12 @@ public class ItemGravity : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    /*private void Update()
+    private void Update()
     {
         rigidbody.AddForce(gravityX, gravityY, 0);
-    }*/
-    private void Update()
+    }
+
+   /* private void Update()
     {
         //transform.localEulerAngles = new Vector3(0, 0, 0);
         if (Input.GetButton("PickUp") && pickObjectDestination.transform.childCount <= 1 &&
@@ -38,7 +39,7 @@ public class ItemGravity : MonoBehaviour
             rigidbody.AddForce(gravityX, gravityY, 0);
             
         }
-    }
+    }*/
 
     // Update is called once per frame
     /*void FixedUpdate()

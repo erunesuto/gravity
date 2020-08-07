@@ -23,6 +23,8 @@ public class FPSController : MonoBehaviour
     public float rotationTime = 1f;
     private int gravityID = 2; //controles what "gravity position" player is(1-up, 2d-own, 3-left o 4-right) Used to avoid change to the smae gravity twice
     private bool changeGravityButtonDown = false;//flag. Controlls if any change gravity button is pushed
+    [HideInInspector]
+    public bool changeGravityAvailable = true;
 
     // Start is called before the first frame update
     void Start()
@@ -180,7 +182,7 @@ public class FPSController : MonoBehaviour
     {
         //if (isGrounded && (transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == -90 || transform.localEulerAngles.z == 180 || transform.localEulerAngles.z == 0))
         // "elbueno" if (isGrounded && (transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == 270 || transform.localEulerAngles.z == 180  || transform.localEulerAngles.z == 0 || transform.localEulerAngles.z == 360))
-        if (isGrounded && (Mathf.Round( transform.localEulerAngles.z) == 90f ||
+        if (isGrounded && changeGravityAvailable && (Mathf.Round( transform.localEulerAngles.z) == 90f ||
             Mathf.Round(transform.localEulerAngles.z) == 270 || Mathf.Round(transform.localEulerAngles.z) == 180 ||
             Mathf.Round(transform.localEulerAngles.z) ==  0 || Mathf.Round(transform.localEulerAngles.z)== 360))
 

@@ -6,6 +6,7 @@ public class PickObject : MonoBehaviour
 {
 
     private Rigidbody rigidbody;
+    protected Vector3 spawmPosition;
     private GameObject pickObjectDestination;
     public static float pickDistance = 3f;
     [Tooltip("True if use the general gravity. False if use its own gravity.")]
@@ -19,53 +20,28 @@ public class PickObject : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         //pickObjectDestination = GameObject.Find("/PlayerRB/PickObject2");
         pickObjectDestination = GameObject.Find("/PlayerRB/Main Camera/PickObject");
+        
+        spawmPosition= new Vector3 (transform.position.x, transform.position.y, transform.position.z);
     }
 
-   /* private void Update()
+    private void Update()
     {
-        if(Input.GetButton("PickUp"))
-        {
-            if (pickObjectDestination.transform.childCount < 1 && 
-                Vector3.Distance(transform.position, pickObjectDestination.transform.position) < pickDistance)//YOu cannot pick up the object if you are too far away
-            {
-                GetComponent<BoxCollider>().enabled = false;
-                GetComponent<Rigidbody>().useGravity = false;
-                //this.transform.position = pickObjectDestination.position;
-                this.transform.position = pickObjectDestination.transform.position;
-                this.transform.parent = GameObject.Find("PickObject").transform;
-            }
-        }
-        else
-        {
-            this.transform.parent = null;
-            if (thisItemUseGravity)
-            {
-                GetComponent<Rigidbody>().useGravity = true;
-                
-            }
-            //GetComponent<Rigidbody>().useGravity = true;
-            GetComponent<BoxCollider>().enabled = true;
-        }
+      
 
-        if( pickObjectDestination.transform.childCount > 0)
-        {
-            Debug.Log(pickObjectDestination.transform.childCount);
-        }
-
-
-    }*/
+    }
 
    private void OnMouseDown()
     {
         if(Vector3.Distance(transform.position, pickObjectDestination.transform.position) < pickDistance)//YOu cannot pick up the object if you are too far away
         {
-            if (GetComponent<BoxCollider>())
+            GetComponent<Collider>().enabled = false;
+            /*if (GetComponent<BoxCollider>())
             {
                 GetComponent<BoxCollider>().enabled = false;
             }else if (GetComponent<SphereCollider>())
             {
                 GetComponent<SphereCollider>().enabled = false;
-            }
+            }*/
 
             rigidbody.freezeRotation = true;
             rigidbody.constraints = RigidbodyConstraints.FreezePosition;
@@ -103,14 +79,33 @@ public class PickObject : MonoBehaviour
             this.GetComponent<ItemGravity>().gravityX = itemOwnGravityX;
             this.GetComponent<ItemGravity>().gravityY = itemOwnGravityY;
         }
-        
-        if (GetComponent<BoxCollider>())
+
+        GetComponent<Collider>().enabled = true;
+        /*if (GetComponent<BoxCollider>())
         {
             GetComponent<BoxCollider>().enabled = true;
 
         }else if (GetComponent<SphereCollider>())
         {
             GetComponent<SphereCollider>().enabled = true;
+        }*/
+    }
+
+    /*private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Respawmer"))
+        {
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+            transform.position = spawmPosition;
+        }
+    }*/
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Respawmer"))
+        {
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+            transform.position = spawmPosition;
         }
     }
 
@@ -125,5 +120,7 @@ public class PickObject : MonoBehaviour
             this.GetComponent<ItemGravity>().gravityY = 0;
         }
     }
+
+
 }
 
