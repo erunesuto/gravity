@@ -145,32 +145,38 @@ public class FPSController : MonoBehaviour
                                                       //if (Input.GetButtonDown("GravityUp") && gravityID != 1)
                 {
                     Physics.gravity = new Vector3(0, gravity, 0);//gravity goes up
-                    StartCoroutine(RotateFixedDegrees(Vector3.back * 180, rotationTime));
-                    StartCoroutine(RepositionZAngle(180, rotationTime + 0.01f));
+                    //StartCoroutine(RotateFixedDegrees(Vector3.back * 180, rotationTime));
+                    
+                    StartCoroutine(RotateFixedDegrees(new Vector3(0, transform.localEulerAngles.y, 180)/*Vector3.back * 180*/, rotationTime));
+                    //StartCoroutine(RepositionZAngle(180, rotationTime + 0.01f));
+                    StartCoroutine(RepositionAngles(0, transform.localEulerAngles.y, 180, rotationTime + 0.01f));
                     //gravityID = 4;//"flag"
                     changeGravityButtonDown = false;
                 }
                 else if (gravityID == 2) /*&& gravityID != 2*/
                 {
                     Physics.gravity = new Vector3(0, -gravity, 0);//gravity goes down
-                    StartCoroutine(RotateFixedDegrees(Vector3.back * 0, rotationTime));
-                    StartCoroutine(RepositionZAngle(0, rotationTime + 0.01f));
+                    StartCoroutine(RotateFixedDegrees(new Vector3(0, transform.localEulerAngles.y, 0), rotationTime));
+                    //StartCoroutine(RepositionZAngle(0, rotationTime + 0.01f));
+                    StartCoroutine(RepositionAngles(0, transform.localEulerAngles.y, 0, rotationTime + 0.01f));
                     //gravityID = 2;//"flag"
                     changeGravityButtonDown = false;
                 }
                 else if (gravityID == 1)
                 {
                     Physics.gravity = new Vector3(-gravity, 0, 0);//gravity goes left
-                    StartCoroutine(RotateFixedDegrees(Vector3.back * 90, rotationTime));
-                    StartCoroutine(RepositionZAngle(-90, rotationTime + 0.01f));
+                    StartCoroutine(RotateFixedDegrees(new Vector3(transform.localEulerAngles.y, 0, - 90), rotationTime));
+                    //StartCoroutine(RepositionZAngle(-90, rotationTime + 0.01f));
+                    StartCoroutine(RepositionAngles(transform.localEulerAngles.y, 0, -90, rotationTime + 0.01f));
                     //gravityID = 1;//"flag"
                     changeGravityButtonDown = false;
                 }
                 else if (gravityID == 3)
                 {
                     Physics.gravity = new Vector3(gravity, -0, 0);//gravity goes right
-                    StartCoroutine(RotateFixedDegrees(Vector3.back * -90, rotationTime));
-                    StartCoroutine(RepositionZAngle(90, rotationTime + 0.01f));
+                    StartCoroutine(RotateFixedDegrees(new Vector3(transform.localEulerAngles.y, 0,  90), rotationTime));
+                    //StartCoroutine(RepositionZAngle(90, rotationTime + 0.01f));
+                    StartCoroutine(RepositionAngles(transform.localEulerAngles.y, 0, 90, rotationTime + 0.01f));
                     //gravityID = 3;//"flag"
                     changeGravityButtonDown = false;
                 }
@@ -195,11 +201,6 @@ public class FPSController : MonoBehaviour
         }
     }
 
-    void resetPlayerScale()
-    {
-        transform.localScale = new Vector3(1, 1, 1);
-        Invoke("resetPlayerScale", 5);
-    }
     void repositionZAngles()
     {
         if(gravityID == 1)
@@ -220,30 +221,8 @@ public class FPSController : MonoBehaviour
         }
     }
 
-    void lockCamera()
-    {
-        var isLock = false;
-
-        if (Input.GetButtonDown("GravityLeft") || Input.GetButtonDown("GravityRight") || Input.GetButtonDown("GravityUp"))
-        {
-            isLock = true;
-        }
-
-        if (canChangeGravity())
-        {
-            isLock = false;
-        }
-
-        if(!isLock)
-        //if ((transform.localEulerAngles.z == 90 || transform.localEulerAngles.z == 270 || transform.localEulerAngles.z == 180 || transform.localEulerAngles.z == 0 || transform.localEulerAngles.z == 360))
-        {
-            GetComponentInChildren<MouseLookRB>().enabled = true;
-        }
-        else
-        {
-            GetComponentInChildren<MouseLookRB>().enabled = false;
-        }
-    }
+ 
+    
 
     #region COROUTINES
     //COROUTINES
@@ -258,7 +237,7 @@ public class FPSController : MonoBehaviour
         }
     }
 
-    IEnumerator RotateFixedDegrees(Vector3 finalRotation, float inTime)//rotate to Xposition in X seconds. Used
+    IEnumerator RotateFixedDegrees(Vector3 finalRotation, float inTime)//rotate to Xrotation in X seconds. Used
     {
         
         var fromAngle = transform.rotation;
@@ -271,12 +250,43 @@ public class FPSController : MonoBehaviour
   
     }
 
+    /*
+     IEnumerator RotateFixedDegrees(Vector3 finalRotation, float inTime)//rotate to Xrotation in X seconds. Used
+    {
+        
+        var fromAngle = transform.rotation;
+        var toAngle = Quaternion.Euler(finalRotation);
+        for (var t = 0f; t < 1; t += Time.deltaTime / inTime)
+        {
+            transform.rotation = Quaternion.Lerp(fromAngle, toAngle, t);
+            yield return null;
+        }
+  
+    }
+     * */
+
     //change Z degrees rotation after X seconds
     //Used to fixed the rotation after change gravity. Some how sometimes does not rotate 90º but 89.81º 
     IEnumerator RepositionZAngle(int degrees, float delayTime)
     {    
         yield return new WaitForSeconds(delayTime);
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, degrees);
+    }
+    IEnumerator RepositionXAngle(int degrees, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, degrees);
+    }
+    IEnumerator RepositionYAngle(int degrees, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, 0, degrees);
+    }
+
+    IEnumerator RepositionAngles(float degreesX, float degreesY, float degreesZ, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        transform.localEulerAngles = new Vector3(degreesX, degreesY, degreesZ);
     }
     #endregion
 }

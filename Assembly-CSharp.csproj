@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Rigibody\ItemGravity.cs" />
     <Compile Include="Assets\Scripts\Rigibody\MouseLookRB.cs" />
     <Compile Include="Assets\Scripts\Rigibody\PickObject.cs" />
+    <Compile Include="Assets\Scripts\Rigibody\test\FPSControllerTest.cs" />
     <Compile Include="Assets\Scripts\RotationTest.cs" />
     <Compile Include="Assets\Scripts\Scenario\DisableChangeGravity.cs" />
     <Compile Include="Assets\Scripts\Scenario\MovableBlock\Key.cs" />
