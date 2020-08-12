@@ -5,6 +5,7 @@ using UnityEngine;
 public class MovingPlatformV2 : MonoBehaviour
 {
     GameObject player;
+    GameObject groundCheck;
     private Transform target;
     public float speed;
     int actualTarget = 0;
@@ -12,26 +13,27 @@ public class MovingPlatformV2 : MonoBehaviour
     public Transform[] targetsArray = new Transform[2];
 
     public LayerMask playerMask;
-    [Tooltip("The size of the Phisic.Check to detect collision with the player. The size have to be a bit bigger than the scale of the platform")]
+    /*[Tooltip("The size of the Phisic.Check to detect collision with the player. The size have to be a bit bigger than the scale of the platform")]
     private Vector3 sizeCollider;
     [Tooltip("The size the collider is bigger than the platform")]
     public float sizeColliderIncrement = 0.2f;
     [Tooltip("The sizeCollierIncrement have to be smaller than the isTrigger box collider scale.")]
-    public bool explanation;
+    public bool explanation;*/
 
     // Use this for initialization
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player"); //find the player
+        //groundCheck = GameObject.Find("/PlayerRB/GroundCheck");
         target = targetsArray[0];
 
-        sizeCollider = new Vector3(transform.localScale.x + sizeColliderIncrement, transform.localScale.y + sizeColliderIncrement, transform.localScale.z + sizeColliderIncrement);
+        //sizeCollider = new Vector3(transform.localScale.x + sizeColliderIncrement, transform.localScale.y + sizeColliderIncrement, transform.localScale.z + sizeColliderIncrement);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+ 
     }
 
     void FixedUpdate()
@@ -67,15 +69,12 @@ public class MovingPlatformV2 : MonoBehaviour
         //mejora del ontriger enter
         //isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, scenarioMask);
         
-        if(Physics.CheckBox(transform.position, sizeCollider / 2, new Quaternion(0,0,0,0), playerMask))
+       /* if(Physics.CheckBox(transform.position, sizeCollider / 2, new Quaternion(0,0,0,0), playerMask))
         {
             player.transform.parent = transform;
             Debug.Log("contacto");
-        }
-        /*else
-        {
-            player.transform.parent = null;
         }*/
+     
 
     }
 
@@ -84,13 +83,14 @@ public class MovingPlatformV2 : MonoBehaviour
 
     
 
-    /*private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject.CompareTag("GroundCheck"))
+            //if (other.gameObject == groundCheck)
         {
             player.transform.parent = transform;
         }
-    }*/
+    }
 
 
     //Hace que el jugador no sea hijo de la plataforma
@@ -101,4 +101,10 @@ public class MovingPlatformV2 : MonoBehaviour
             player.transform.parent = null;
         }
     }
+
+    /*void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawCube(transform.position, new Vector3(transform.localScale.x + sizeColliderIncrement, transform.localScale.y + sizeColliderIncrement, transform.localScale.z + sizeColliderIncrement));
+    }*/
 }

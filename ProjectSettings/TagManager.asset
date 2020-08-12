@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Key
   - Respawmer
+  - GroundCheck
   layers:
   - Default
   - TransparentFX

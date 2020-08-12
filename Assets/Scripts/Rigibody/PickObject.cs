@@ -19,9 +19,10 @@ public class PickObject : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         //pickObjectDestination = GameObject.Find("/PlayerRB/PickObject2");
-        pickObjectDestination = GameObject.Find("/PlayerRB/Main Camera/PickObject");
-        
-        spawmPosition= new Vector3 (transform.position.x, transform.position.y, transform.position.z);
+        //pickObjectDestination = GameObject.Find("/PlayerRB/Main Camera/PickObject"); //without prefabpack
+        pickObjectDestination = GameObject.Find("/PlayerPrefabPack/PlayerRB/Main Camera/PickObject");//with prefab pack
+
+        spawmPosition = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
     }
 
     private void Update()

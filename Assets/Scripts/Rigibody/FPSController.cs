@@ -36,12 +36,11 @@ public class FPSController : MonoBehaviour
     void Update()
     {
 
-        //Debug.Log(canChangeGravity());
-
+      
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, scenarioMask);
         jump();
 
-        changeGravityV2();
+        changeGravity();
 
     }
 
@@ -69,64 +68,60 @@ public class FPSController : MonoBehaviour
         }
     }
 
+    
     void changeGravity()
     {
         if (canChangeGravity())
         {
-            //if (Input.GetKeyDown(KeyCode.Alpha1) /*&& isGrounded*/ )//cambiar el key por button
-            if (Input.GetButtonDown("GravityUp") && gravityID != 1)
+            /*if (Input.GetButtonDown("GravityLeft"))
             {
-                Physics.gravity = new Vector3(0, gravity, 0);//gravity goes up
-                StartCoroutine(RotateFixedDegrees(Vector3.back * 180, rotationTime));
-                StartCoroutine(RepositionZAngle(180, rotationTime + 0.01f));
-                gravityID = 1;//"flag"
+                if (GravityPositionController.invertChangeGravityControlls == false)//manage where player looking to make change gravity more friendly. Q always change gravity to the left no matter where you are facing
+                {
+                    gravityID--;
+                    changeGravityButtonDown = true;
+                }
+                else
+                {
+                    gravityID++;
+                    changeGravityButtonDown = true;
+                }
             }
-            else if (Input.GetButtonDown("GravityDown") && gravityID != 2)
+            else if (Input.GetButtonDown("GravityRight"))
             {
-                Physics.gravity = new Vector3(0, -gravity, 0);//gravity goes down
-                StartCoroutine(RotateFixedDegrees(Vector3.back * 0, rotationTime));
-                StartCoroutine(RepositionZAngle(0, rotationTime + 0.01f));
-                gravityID = 2;//"flag"
+                if (GravityPositionController.invertChangeGravityControlls == false)
+                {
+                    gravityID++;
+                    changeGravityButtonDown = true;
+                }
+                else
+                {
+                    gravityID--;
+                    changeGravityButtonDown = true;
+                }
             }
-            else if (Input.GetButtonDown("GravityLeft") && gravityID != 3)
-            {
-                Physics.gravity = new Vector3(-gravity, 0, 0);//gravity goes left
-                StartCoroutine(RotateFixedDegrees(Vector3.back * 90, rotationTime));
-                StartCoroutine(RepositionZAngle(-90, rotationTime + 0.01f));
-                gravityID = 3;//"flag"
-            }
-            else if (Input.GetButtonDown("GravityRight") && gravityID != 4)
-            {
-                Physics.gravity = new Vector3(gravity, -0, 0);//gravity goes right
-                StartCoroutine(RotateFixedDegrees(Vector3.back * -90, rotationTime));
-                StartCoroutine(RepositionZAngle(90, rotationTime + 0.01f));
-                gravityID = 4;//"flag"
-            }
-        }
-    }
-
-    void changeGravityV2()
-    {
-        if (canChangeGravity())
-        {
-            /////
-            //if (Input.GetKeyDown(KeyCode.Q))
-            if (Input.GetButtonDown("GravityLeft"))
-            {
-                gravityID--;
-                changeGravityButtonDown = true;
-              
-            }else if (Input.GetButtonDown("GravityUp"))
+            else if (Input.GetButtonDown("GravityUp"))
             {
                 gravityID += 2;
                 changeGravityButtonDown = true;
+            }*/
+
+            if (Input.GetButtonDown("GravityLeft") && !GravityPositionController.invertChangeGravityControlls || (Input.GetButtonDown("GravityRight") && GravityPositionController.invertChangeGravityControlls))
+            {
+                gravityID--;
+                changeGravityButtonDown = true;
             }
-            else if (Input.GetButtonDown("GravityRight"))
+            else if (Input.GetButtonDown("GravityRight") /*&& !GravityPositionController.invertChangeGravityControlls*/ || (Input.GetButtonDown("GravityLeft") && GravityPositionController.invertChangeGravityControlls))
             {
                 gravityID++;
                 changeGravityButtonDown = true;
             }
-            ////
+            else if (Input.GetButtonDown("GravityUp"))
+            {
+                gravityID += 2;
+                changeGravityButtonDown = true;
+            }
+
+            ////Readjust gravityID
             if (gravityID == 0)
             {
                 gravityID = 4;
@@ -141,16 +136,12 @@ public class FPSController : MonoBehaviour
             //////
             if (changeGravityButtonDown == true)//if press Q, 2 or E
             {
-                if (gravityID == 4) /*&& isGrounded*/ //cambiar el key por button
-                                                      //if (Input.GetButtonDown("GravityUp") && gravityID != 1)
+                if (gravityID == 4)                                     
                 {
                     Physics.gravity = new Vector3(0, gravity, 0);//gravity goes up
-                    //StartCoroutine(RotateFixedDegrees(Vector3.back * 180, rotationTime));
-                    
                     StartCoroutine(RotateFixedDegrees(new Vector3(0, transform.localEulerAngles.y, 180)/*Vector3.back * 180*/, rotationTime));
                     //StartCoroutine(RepositionZAngle(180, rotationTime + 0.01f));
                     StartCoroutine(RepositionAngles(0, transform.localEulerAngles.y, 180, rotationTime + 0.01f));
-                    //gravityID = 4;//"flag"
                     changeGravityButtonDown = false;
                 }
                 else if (gravityID == 2) /*&& gravityID != 2*/
@@ -159,7 +150,6 @@ public class FPSController : MonoBehaviour
                     StartCoroutine(RotateFixedDegrees(new Vector3(0, transform.localEulerAngles.y, 0), rotationTime));
                     //StartCoroutine(RepositionZAngle(0, rotationTime + 0.01f));
                     StartCoroutine(RepositionAngles(0, transform.localEulerAngles.y, 0, rotationTime + 0.01f));
-                    //gravityID = 2;//"flag"
                     changeGravityButtonDown = false;
                 }
                 else if (gravityID == 1)
@@ -168,7 +158,6 @@ public class FPSController : MonoBehaviour
                     StartCoroutine(RotateFixedDegrees(new Vector3(transform.localEulerAngles.y, 0, - 90), rotationTime));
                     //StartCoroutine(RepositionZAngle(-90, rotationTime + 0.01f));
                     StartCoroutine(RepositionAngles(transform.localEulerAngles.y, 0, -90, rotationTime + 0.01f));
-                    //gravityID = 1;//"flag"
                     changeGravityButtonDown = false;
                 }
                 else if (gravityID == 3)
@@ -177,7 +166,6 @@ public class FPSController : MonoBehaviour
                     StartCoroutine(RotateFixedDegrees(new Vector3(transform.localEulerAngles.y, 0,  90), rotationTime));
                     //StartCoroutine(RepositionZAngle(90, rotationTime + 0.01f));
                     StartCoroutine(RepositionAngles(transform.localEulerAngles.y, 0, 90, rotationTime + 0.01f));
-                    //gravityID = 3;//"flag"
                     changeGravityButtonDown = false;
                 }
             }
@@ -226,7 +214,7 @@ public class FPSController : MonoBehaviour
 
     #region COROUTINES
     //COROUTINES
-    IEnumerator RotateMe(Vector3 byAngles, float inTime)//rotate X degrees in X seconds. NOT USED
+    /*IEnumerator RotateMe(Vector3 byAngles, float inTime)//rotate X degrees in X seconds. NOT USED
     {
         var fromAngle = transform.rotation;
         var toAngle = Quaternion.Euler(transform.eulerAngles + byAngles);
@@ -235,11 +223,10 @@ public class FPSController : MonoBehaviour
             transform.rotation = Quaternion.Lerp(fromAngle, toAngle, t);
             yield return null;
         }
-    }
+    }*/
 
-    IEnumerator RotateFixedDegrees(Vector3 finalRotation, float inTime)//rotate to Xrotation in X seconds. Used
-    {
-        
+    IEnumerator RotateFixedDegrees(Vector3 finalRotation, float inTime)//rotate to Xrotation in X seconds.
+    {       
         var fromAngle = transform.rotation;
         var toAngle = Quaternion.Euler(finalRotation);
         for (var t = 0f; t < 1; t += Time.deltaTime / inTime)
@@ -247,46 +234,29 @@ public class FPSController : MonoBehaviour
             transform.rotation = Quaternion.Lerp(fromAngle, toAngle, t);
             yield return null;
         }
-  
     }
 
-    /*
-     IEnumerator RotateFixedDegrees(Vector3 finalRotation, float inTime)//rotate to Xrotation in X seconds. Used
-    {
-        
-        var fromAngle = transform.rotation;
-        var toAngle = Quaternion.Euler(finalRotation);
-        for (var t = 0f; t < 1; t += Time.deltaTime / inTime)
-        {
-            transform.rotation = Quaternion.Lerp(fromAngle, toAngle, t);
-            yield return null;
-        }
-  
-    }
-     * */
-
-    //change Z degrees rotation after X seconds
+    //change X,Y,Z degrees rotation after X seconds
     //Used to fixed the rotation after change gravity. Some how sometimes does not rotate 90º but 89.81º 
-    IEnumerator RepositionZAngle(int degrees, float delayTime)
-    {    
-        yield return new WaitForSeconds(delayTime);
-        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, degrees);
-    }
-    IEnumerator RepositionXAngle(int degrees, float delayTime)
-    {
-        yield return new WaitForSeconds(delayTime);
-        transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, degrees);
-    }
-    IEnumerator RepositionYAngle(int degrees, float delayTime)
-    {
-        yield return new WaitForSeconds(delayTime);
-        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, 0, degrees);
-    }
-
     IEnumerator RepositionAngles(float degreesX, float degreesY, float degreesZ, float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
         transform.localEulerAngles = new Vector3(degreesX, degreesY, degreesZ);
     }
+
+    /*
+     IEnumerator RotateFixedDegrees(Vector3 finalRotation, float inTime)//rotate to Xrotation in X seconds. Used
+    {      
+        var fromAngle = transform.rotation;
+        var toAngle = Quaternion.Euler(finalRotation);
+        for (var t = 0f; t < 1; t += Time.deltaTime / inTime)
+        {
+            transform.rotation = Quaternion.Lerp(fromAngle, toAngle, t);
+            yield return null;
+        }
+    }*/
+
+
+
     #endregion
 }
