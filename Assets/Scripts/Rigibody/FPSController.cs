@@ -65,6 +65,7 @@ public class FPSController : MonoBehaviour
         if (Input.GetButton("Jump") && isGrounded)
         {
             rigidbody.AddRelativeForce(0, jumpForce, 0);
+
         }
     }
 

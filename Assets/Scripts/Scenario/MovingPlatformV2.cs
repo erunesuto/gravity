@@ -24,10 +24,8 @@ public class MovingPlatformV2 : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player"); //find the player
-        //groundCheck = GameObject.Find("/PlayerRB/GroundCheck");
         target = targetsArray[0];
 
-        //sizeCollider = new Vector3(transform.localScale.x + sizeColliderIncrement, transform.localScale.y + sizeColliderIncrement, transform.localScale.z + sizeColliderIncrement);
     }
 
     // Update is called once per frame
