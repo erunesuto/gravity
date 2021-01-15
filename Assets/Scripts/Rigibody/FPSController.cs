@@ -8,7 +8,7 @@ public class FPSController : MonoBehaviour
 
     [Header("Movement")]
     public float speed = 5;
-    public float jumpForce = 5;
+    public float jumpForce = 25;
     private float xAxis, zAxis;
 
     [Header("Ground things")]
@@ -24,7 +24,7 @@ public class FPSController : MonoBehaviour
     private int gravityID = 2; //controles what "gravity position" player is(1-up, 2d-own, 3-left o 4-right) Used to avoid change to the smae gravity twice
     private bool changeGravityButtonDown = false;//flag. Controlls if any change gravity button is pushed
     [HideInInspector]
-    public bool changeGravityAvailable = true;
+    public bool changeGravityAvailable = true; //Allow change gravity on some floors
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +35,8 @@ public class FPSController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(rigidbody.velocity.y);
 
-      
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, scenarioMask);
         jump();
 
@@ -55,16 +55,27 @@ public class FPSController : MonoBehaviour
         xAxis = Input.GetAxis("Horizontal");
         zAxis = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(xAxis, 0, zAxis);
-        transform.Translate(movement * speed * Time.deltaTime);
-        //rigidbody.AddRelativeForce(movement * speed * Time.deltaTime);
         
+        //if(isGrounded)
+        transform.Translate(movement * speed * Time.deltaTime);
+        //rigidbody.AddRelativeForce(Vector3.down * 10 * Time.deltaTime);
+        //rigidbody.AddRelativeForce(movement * speed * Time.deltaTime);
+        //rigidbody.velocity = new Vector3((movement * speed * Time.deltaTime); o algo asi
     }
 
     void jump()
     {
-        if (Input.GetButton("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded  /*&& Mathf.Round(rigidbody.velocity.y) == 0*/)
         {
             rigidbody.AddRelativeForce(0, jumpForce, 0);
+            //if(rigidbody.velocity.y <= 0)
+            /*if (rigidbody.velocity.y > 3)
+            {
+                rigidbody.velocity = new Vector3 (0,3,0);
+            }*/
+           
+            //rigidbody.AddRelativeForce(0, jumpForce /100, 0, ForceMode.Impulse);
+
 
         }
     }

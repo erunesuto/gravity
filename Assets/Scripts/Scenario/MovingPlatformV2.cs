@@ -8,6 +8,10 @@ public class MovingPlatformV2 : MonoBehaviour
     GameObject groundCheck;
     private Transform target;
     public float speed;
+    [Tooltip("Time the platform wait. In seconds")]
+    public float waitTime = 0;
+    private float actualTime = 0;//time when start to count the wait time
+    private bool checkTime = true;//flag
     int actualTarget = 0;
     //[Range(2, 5)]
     public Transform[] targetsArray = new Transform[2];
@@ -60,7 +64,19 @@ public class MovingPlatformV2 : MonoBehaviour
         //si la posicion de la plataforma == posicion objetivo (ha llegao a su destino)
         if (transform.position == target.position)
         {
-            actualTarget++;  
+            //Manage the wait time  
+            if (checkTime)
+            {
+                actualTime = Time.fixedTime;
+                checkTime = false;
+            }
+            
+            if(Time.fixedTime >= actualTime  + waitTime)
+            {
+                actualTarget++;
+                checkTime = true;
+            }
+            
         }
 
 
@@ -79,8 +95,15 @@ public class MovingPlatformV2 : MonoBehaviour
     //Controla que el personaje se mueva con la plataforma al entrar en contacto con la misma
     //Hace al jugador hijo de la plataforma para conseguir que se muevan juntos
 
-    
 
+    /*private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("GroundCheck"))
+        //if (other.gameObject == groundCheck)
+        {
+            player.transform.parent = transform;
+        }
+    }*/
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("GroundCheck"))
@@ -94,7 +117,8 @@ public class MovingPlatformV2 : MonoBehaviour
     //Hace que el jugador no sea hijo de la plataforma
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject.CompareTag("GroundCheck"))
+        //if (other.gameObject == player)
         {
             player.transform.parent = null;
         }

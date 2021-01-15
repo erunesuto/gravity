@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 1262161817293132957}
   - component: {fileID: 1262161817293132959}
   - component: {fileID: 1262161817293132945}
-  m_Layer: 0
+  - component: {fileID: 3292316756029982865}
+  m_Layer: 8
   m_Name: CubeOwnGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,3 +140,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisItemUseGravity: 0
+  itemFreezeRotation: 0
+--- !u!114 &3292316756029982865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262161817293132952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a91b9da06e43340b1ef5c722f1eda3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

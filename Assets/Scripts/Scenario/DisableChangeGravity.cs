@@ -20,4 +20,21 @@ public class DisableChangeGravity : MonoBehaviour
             other.gameObject.GetComponent<FPSController>().changeGravityAvailable = true;
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<FPSController>().changeGravityAvailable = false;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<FPSController>().changeGravityAvailable = true;
+        }
+    }
+    
 }

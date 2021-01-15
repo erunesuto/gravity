@@ -10,16 +10,19 @@ public class MovableBlock : MonoBehaviour
     public Transform originalPosition;
     [Tooltip("Position to move the block. Position when the beacon is activated")]
     public Transform newPosition;
+
+    [Header("Speeds")]
     [Tooltip("The speed the block moves. 0 for not moving")]
     public float speed;
     public float rotationSpeed;
     public float resizeSpeed;
-
-    //[Tooltip("the time it takes for the block to rotate. 0 for no rotation")]
-    //public float time;
     [Tooltip("Activate the resize")]
     public bool resize = false;
     private bool canMove = false;
+
+    [Header("Materials")]
+    public PhysicMaterial friction0;
+    public PhysicMaterial noMaterial;
 
     [Tooltip("The original position scale have to be the same than de movingBlock for a correct performance")]
     public bool explanation;
@@ -28,7 +31,7 @@ public class MovableBlock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //movingBlock.GetComponent<Collider>().material = friction0;
     }
 
     private void FixedUpdate()
@@ -43,6 +46,8 @@ public class MovableBlock : MonoBehaviour
             {
                 movingBlock.transform.localScale = Vector3.Lerp(movingBlock.transform.localScale, newPosition.localScale, resizeSpeed * Time.deltaTime);
             }
+
+            //movingBlock.GetComponent<Collider>().material = null;
         }
         else
         {
@@ -53,6 +58,8 @@ public class MovableBlock : MonoBehaviour
             {
                 movingBlock.transform.localScale = Vector3.Lerp(movingBlock.transform.localScale, originalPosition.localScale, resizeSpeed * Time.deltaTime);
             }
+
+            //movingBlock.GetComponent<Collider>().material = friction0;
         }
     }
 

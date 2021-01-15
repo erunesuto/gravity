@@ -8,7 +8,7 @@ public class PickObject : MonoBehaviour
     private Rigidbody rigidbody;
     protected Vector3 spawmPosition;
     private GameObject pickObjectDestination;
-    public static float pickDistance = 3f;
+    public static float pickDistance = 1f;
     [Tooltip("True if use the general gravity. False if use its own gravity.")]
     public bool thisItemUseGravity = true;
     private float itemOwnGravityX;//save the value of the gravity for ownGravity items

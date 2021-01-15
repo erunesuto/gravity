@@ -40,7 +40,7 @@ public class FPSControllerTest : MonoBehaviour
     void Update()
     {
 
-        Debug.Log(invertChangeGravityControlls);
+        //Debug.Log(invertChangeGravityControlls);
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, scenarioMask);
         jump();
